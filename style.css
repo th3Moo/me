@@ -1,0 +1,109 @@
+html, body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+}
+
+@import url('https://rsms.me/inter/inter.css');
+
+#sidebar {
+    font-family: 'Inter', sans-serif;
+}
+
+#file-tree ul {
+    list-style: none;
+    padding-left: 1rem;
+}
+
+#file-tree li {
+    margin: 2px 0;
+}
+
+#file-tree .file-item, #file-tree .folder-item {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: background-color 0.2s, color 0.2s;
+    color: #a5b4fc; /* Indigo-300 for files */
+}
+
+#file-tree .folder-item {
+    font-weight: 500;
+    color: #e5e7eb; /* Gray-200 for folders */
+}
+
+#file-tree .file-item:hover, #file-tree .folder-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+#file-tree .file-item.active {
+    background-color: #4f46e5; /* Indigo-600 */
+    color: white;
+}
+
+#file-tree .file-item.active .lucide {
+    color: white !important;
+}
+
+#file-tree .folder-content {
+    display: none;
+}
+
+#file-tree .folder-item.open + .folder-content {
+    display: block;
+}
+
+#file-tree .lucide {
+    margin-right: 0.5rem;
+    flex-shrink: 0;
+}
+
+.folder-item .lucide-chevron-right {
+    transition: transform 0.2s ease-in-out;
+}
+
+.folder-item.open .lucide-chevron-right {
+    transform: rotate(90deg);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #161b22;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #4a5568;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #718096;
+}
+
+/* Highlight.js overrides */
+.hljs {
+    background: #0d1117 !important;
+    color: #c9d1d9;
+    font-size: 14px;
+    line-height: 1.6;
+    padding: 1.5rem !important;
+}
+
+pre {
+    margin: 0;
+}
+
+code {
+    white-space: pre-wrap;
+}
+
+.prose {
+    max-width: none;
+}

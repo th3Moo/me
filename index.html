@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super App Backend Source</title>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="h-full bg-gray-900 text-gray-300 font-sans antialiased">
+    <div id="app" class="flex h-full">
+        <aside id="sidebar" class="h-full w-80 flex-shrink-0 bg-[#161b22] border-r border-gray-700/50 p-4 flex flex-col">
+            <header class="flex items-center space-x-3 pb-4 border-b border-gray-700/50">
+                <div class="w-10 h-10 bg-yellow-400 rounded-lg flex items-center justify-center">
+                    <span class="text-black font-bold text-2xl">S</span>
+                </div>
+                <div>
+                    <h1 class="font-bold text-white text-lg">Super App Backend</h1>
+                    <p class="text-sm text-gray-400">Django REST Framework</p>
+                </div>
+            </header>
+            <nav id="file-tree" class="mt-4 flex-grow overflow-y-auto"></nav>
+        </aside>
+
+        <main id="content" class="flex-grow flex flex-col h-full overflow-y-auto">
+            <div id="content-header" class="flex-shrink-0 bg-[#0d1117] border-b border-gray-700/50 p-3 flex justify-between items-center">
+                <span id="file-path" class="text-gray-400"></span>
+                <button id="copy-button" class="flex items-center space-x-2 bg-gray-700 hover:bg-gray-600 px-3 py-1.5 rounded-md text-sm text-gray-300 transition-colors">
+                    <i data-lucide="copy" class="w-4 h-4"></i>
+                    <span id="copy-text">Copy</span>
+                </button>
+            </div>
+            <div id="code-container" class="flex-grow p-1 relative overflow-auto">
+                <pre><code id="code-block" class="h-full"></code></pre>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/django.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
