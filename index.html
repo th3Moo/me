@@ -1,48 +1,313 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Super App Backend Source</title>
+    <title>BIG WANG</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="h-full bg-gray-900 text-gray-300 font-sans antialiased">
-    <div id="app" class="flex h-full">
-        <aside id="sidebar" class="h-full w-80 flex-shrink-0 bg-[#161b22] border-r border-gray-700/50 p-4 flex flex-col">
-            <header class="flex items-center space-x-3 pb-4 border-b border-gray-700/50">
-                <div class="w-10 h-10 bg-yellow-400 rounded-lg flex items-center justify-center">
-                    <span class="text-black font-bold text-2xl">S</span>
-                </div>
-                <div>
-                    <h1 class="font-bold text-white text-lg">Super App Backend</h1>
-                    <p class="text-sm text-gray-400">Django REST Framework</p>
-                </div>
-            </header>
-            <nav id="file-tree" class="mt-4 flex-grow overflow-y-auto"></nav>
-        </aside>
+<body class="bg-primary-dark text-white font-['Poppins',_sans-serif]">
 
-        <main id="content" class="flex-grow flex flex-col h-full overflow-y-auto">
-            <div id="content-header" class="flex-shrink-0 bg-[#0d1117] border-b border-gray-700/50 p-3 flex justify-between items-center">
-                <span id="file-path" class="text-gray-400"></span>
-                <button id="copy-button" class="flex items-center space-x-2 bg-gray-700 hover:bg-gray-600 px-3 py-1.5 rounded-md text-sm text-gray-300 transition-colors">
-                    <i data-lucide="copy" class="w-4 h-4"></i>
-                    <span id="copy-text">Copy</span>
-                </button>
-            </div>
-            <div id="code-container" class="flex-grow p-1 relative overflow-auto">
-                <pre><code id="code-block" class="h-full"></code></pre>
-            </div>
-        </main>
+    <div id="modal-overlay" class="fixed inset-0 bg-black bg-opacity-70 z-[99] hidden"></div>
+    
+    <div id="promo-modal" class="app-modal fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#171635] border border-yellow-400/50 rounded-xl z-[100] w-[90%] md:w-[600px] text-center p-8 shadow-lg shadow-yellow-400/10 hidden">
+        <button id="modal-close-btn" class="modal-close-trigger absolute top-2 right-2 text-gray-400 hover:text-white">
+            <i data-lucide="x" class="w-8 h-8"></i>
+        </button>
+        <img src="https://r2.flowith.net/files/o/1756339695520-big_wang_happy_hour_banner_index_1@1024x1024.png" alt="Happy Hours" class="w-32 h-32 mx-auto mb-4 object-cover rounded-md">
+        <h2 class="text-3xl font-bold text-yellow-400 mb-2">HAPPY HOURS</h2>
+        <p class="text-lg text-gray-300 mb-6">Enjoy a 30% bonus on all your deposits during happy hours!</p>
+        <a href="#" class="btn-primary w-full md:w-auto">Deposit Now</a>
     </div>
 
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/django.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <div id="login-modal" class="app-modal fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#171635] border border-yellow-400/50 rounded-xl z-[100] w-[90%] md:w-[450px] text-left p-8 shadow-lg shadow-yellow-400/10 hidden">
+        <button class="modal-close-trigger absolute top-2 right-2 text-gray-400 hover:text-white"><i data-lucide="x" class="w-8 h-8"></i></button>
+        <h2 class="text-3xl font-bold text-yellow-400 mb-6 text-center">Sign In</h2>
+        <form id="login-form">
+            <div class="mb-4">
+                <label for="login-email" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                <input type="email" id="login-email" class="w-full form-input" required autocomplete="email">
+            </div>
+            <div class="mb-6">
+                <label for="login-password" class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                <input type="password" id="login-password" class="w-full form-input" required autocomplete="current-password">
+            </div>
+            <p id="login-error" class="text-red-500 text-sm mb-4 text-center hidden"></p>
+            <button type="submit" class="btn-primary w-full text-lg">Sign In</button>
+            <p class="text-center text-gray-400 text-sm mt-4">
+                Don't have an account? <button type="button" id="switch-to-register" class="font-semibold text-yellow-400 hover:underline">Sign Up</button>
+            </p>
+        </form>
+    </div>
 
-    <script type="module" src="script.js"></script>
+    <div id="register-modal" class="app-modal fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#171635] border border-yellow-400/50 rounded-xl z-[100] w-[90%] md:w-[450px] text-left p-8 shadow-lg shadow-yellow-400/10 hidden">
+        <button class="modal-close-trigger absolute top-2 right-2 text-gray-400 hover:text-white"><i data-lucide="x" class="w-8 h-8"></i></button>
+        <h2 class="text-3xl font-bold text-yellow-400 mb-6 text-center">Sign Up</h2>
+        <form id="register-form">
+            <div class="mb-4">
+                <label for="register-username" class="block text-sm font-medium text-gray-300 mb-2">Username</label>
+                <input type="text" id="register-username" class="w-full form-input" required autocomplete="username">
+            </div>
+            <div class="mb-4">
+                <label for="register-email" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                <input type="email" id="register-email" class="w-full form-input" required autocomplete="email">
+            </div>
+            <div class="mb-6">
+                <label for="register-password" class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                <input type="password" id="register-password" class="w-full form-input" minlength="6" required autocomplete="new-password">
+            </div>
+            <p id="register-error" class="text-red-500 text-sm mb-4 text-center hidden"></p>
+            <button type="submit" class="btn-primary w-full text-lg">Create Account</button>
+            <p class="text-center text-gray-400 text-sm mt-4">
+                Already have an account? <button type="button" id="switch-to-login" class="font-semibold text-yellow-400 hover:underline">Sign In</button>
+            </p>
+        </form>
+    </div>
+
+    <header id="main-header" class="sticky top-0 z-50 bg-primary-dark/80 backdrop-blur-md shadow-lg shadow-black/20">
+        <div class="top-header-container bg-secondary-dark">
+            <div class="container mx-auto px-4 flex items-center justify-between h-20">
+                <a href="#" class="flex-shrink-0">
+                    <img src="https://r2.flowith.net/files/o/1756339716224-big_wang_gaming_betting_logo_design_index_0@1024x1024.png" alt="BIG WANG Logo" class="h-10 md:h-12">
+                </a>
+                <div class="hidden lg:flex items-center space-x-6">
+                    <a href="#" class="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors">
+                        <img src="placeholder/blitzResizedSvg.svg" alt="Blitz Dash" class="h-6">
+                        <span class="font-semibold">Blitz Dash</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors">
+                        <img src="placeholder/referral-program-card-icon-1.webp" alt="Affiliate" class="h-6">
+                        <span class="font-semibold">Affiliate</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors">
+                        <img src="placeholder/hall-of-fame-icon-web.svg" alt="Hall of Fame" class="h-6">
+                        <span class="font-semibold">Hall of Fame</span>
+                    </a>
+                </div>
+                <div class="flex items-center space-x-2 md:space-x-4">
+                    <div class="hidden sm:flex items-center bg-black/30 rounded-full pl-3 pr-4 py-1.5 space-x-2 border border-yellow-400/30">
+                        <img src="placeholder/golden-ticket-logo.svg" alt="Golden Ticket" class="h-8">
+                        <div>
+                            <p class="text-xs text-yellow-400 font-semibold uppercase">Golden Ticket</p>
+                            <div id="countdown-timer" class="text-sm font-bold tracking-wider">00d 00h 00m 00s</div>
+                        </div>
+                    </div>
+                    <div id="auth-buttons">
+                        <div id="logged-out-view" class="flex items-center space-x-2 md:space-x-4">
+                            <button id="signin-btn" class="btn-secondary">Sign In</button>
+                            <button id="signup-btn" class="btn-primary">Sign Up</button>
+                        </div>
+                        <div id="logged-in-view" class="hidden items-center space-x-2 md:space-x-4">
+                            <span id="username-display" class="font-semibold text-sm md:text-base"></span>
+                            <button id="logout-btn" class="btn-secondary">Logout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <nav class="bottom-header-container hidden lg:block border-t border-white/10">
+            <div class="container mx-auto px-4 flex items-center justify-center space-x-8 h-14">
+                <a href="#platforms" class="nav-link">Platforms</a>
+                <a href="#promotions" class="nav-link">Promotions</a>
+                <a href="#hot-games" class="nav-link">Hot Games</a>
+                <a href="#how-it-works" class="nav-link">How it Works</a>
+                <a href="#about-us" class="nav-link">About</a>
+                <a href="#social-proof" class="nav-link">Community</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero-section" class="relative w-full h-[50vh] md:h-[70vh] overflow-hidden bg-secondary-dark flex items-center justify-center">
+            <div id="hero-slider" class="w-full h-full flex transition-transform duration-500 ease-in-out"></div>
+            <button id="hero-prev" class="absolute top-1/2 -translate-y-1/2 left-4 slider-arrow">
+                <i data-lucide="chevron-left" class="w-8 h-8"></i>
+            </button>
+            <button id="hero-next" class="absolute top-1/2 -translate-y-1/2 right-4 slider-arrow">
+                <i data-lucide="chevron-right" class="w-8 h-8"></i>
+            </button>
+            <div id="hero-dots" class="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2"></div>
+        </section>
+
+        <section id="quick-deposit" class="py-12 bg-primary-dark">
+            <div class="container mx-auto px-4">
+                <form id="quick-deposit-form" class="bg-secondary-dark rounded-xl p-6 md:p-8 grid grid-cols-1 md:grid-cols-5 gap-4 items-end shadow-lg">
+                    <div class="md:col-span-2">
+                        <label for="platform-select" class="block text-sm font-medium text-gray-300 mb-2">Platform</label>
+                        <select id="platform-select" class="w-full form-input">
+                            <option>Loading platforms...</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="deposit-amount" class="block text-sm font-medium text-gray-300 mb-2">Amount</label>
+                        <input type="number" id="deposit-amount" class="w-full form-input" placeholder="25.00" min="1">
+                    </div>
+                    <div>
+                        <label for="coupon-code" class="block text-sm font-medium text-gray-300 mb-2">Coupon Code</label>
+                        <input type="text" id="coupon-code" class="w-full form-input" placeholder="Optional">
+                    </div>
+                    <button type="submit" class="btn-primary h-12 w-full text-lg">Play Now!</button>
+                    <p id="deposit-message" class="text-sm mt-2 text-center md:col-span-5 hidden"></p>
+                </form>
+            </div>
+        </section>
+
+        <section id="platforms" class="py-16">
+            <div class="container mx-auto px-4">
+                <h2 class="section-title">CHOOSE YOUR PLATFORM</h2>
+                <div id="platform-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4 md:gap-6">
+                </div>
+            </div>
+        </section>
+
+        <section id="promotions" class="py-16 bg-secondary-dark">
+            <div class="container mx-auto px-4">
+                 <div class="flex justify-between items-center mb-8">
+                    <h2 class="section-title !mb-0">PROMOTIONS</h2>
+                    <div class="flex space-x-2">
+                         <button id="promo-carousel-prev" class="carousel-arrow"><i data-lucide="arrow-left"></i></button>
+                         <button id="promo-carousel-next" class="carousel-arrow"><i data-lucide="arrow-right"></i></button>
+                    </div>
+                </div>
+                <div class="overflow-hidden">
+                    <div id="promo-carousel-container" class="flex transition-transform duration-500 ease-in-out -mx-3">
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="hot-games" class="py-16">
+            <div class="container mx-auto px-4">
+                 <div class="flex justify-between items-center mb-8">
+                    <h2 class="section-title !mb-0">HOT GAMES</h2>
+                    <div class="flex space-x-2">
+                         <button id="hot-games-prev" class="carousel-arrow"><i data-lucide="arrow-left"></i></button>
+                         <button id="hot-games-next" class="carousel-arrow"><i data-lucide="arrow-right"></i></button>
+                    </div>
+                </div>
+                <div class="overflow-hidden">
+                    <div id="hot-games-carousel-container" class="flex transition-transform duration-500 ease-in-out -mx-3">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="about-us" class="py-16 bg-secondary-dark">
+            <div class="container mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
+                <div class="text-center md:text-left">
+                    <h2 class="section-title !text-left">About BIG WANG</h2>
+                    <p class="text-gray-300 mb-6">Welcome to BIG WANG, your number one source for the best online sweepstakes casino experience. We are dedicated to giving you the very best of sweepstakes games, with a focus on variety, security, and big wins.</p>
+                    <p class="text-gray-300 mb-8">Play your favorite games from the comfort of your home. With a wide range of platforms and instant deposits, the fun never stops.</p>
+                    <a href="#" class="btn-primary">Learn More</a>
+                </div>
+                <div>
+                    <img src="placeholder/maxresdefault.webp" alt="About BIG WANG" class="rounded-xl shadow-lg shadow-black/30">
+                </div>
+            </div>
+        </section>
+
+        <section id="how-it-works" class="py-16">
+            <div class="container mx-auto px-4 text-center">
+                <h2 class="section-title">How To Get Started</h2>
+                <div class="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto mt-12">
+                    <div class="flex flex-col items-center">
+                        <img src="placeholder/get-started-sign-up.webp" alt="Sign Up" class="h-24 mb-4">
+                        <h3 class="text-xl font-bold mb-2">1. Sign Up</h3>
+                        <p class="text-gray-400">Create your free account in just a few minutes.</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <img src="placeholder/get-started-deposit.webp" alt="Deposit" class="h-24 mb-4">
+                        <h3 class="text-xl font-bold mb-2">2. Deposit</h3>
+                        <p class="text-gray-400">Add funds instantly using our secure payment methods.</p>
+                    </div>
+                    <div class="flex flex-col items-center">
+                        <img src="placeholder/get-started-have-fun.webp" alt="Play" class="h-24 mb-4">
+                        <h3 class="text-xl font-bold mb-2">3. Play & Win</h3>
+                        <p class="text-gray-400">Enjoy a wide variety of games and win big!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="social-proof" class="py-16 bg-secondary-dark">
+            <div class="container mx-auto px-4 grid lg:grid-cols-2 gap-12">
+                <div>
+                    <h2 class="section-title !text-left">Recent Winners</h2>
+                    <div class="bg-primary-dark rounded-lg p-4 h-96 overflow-hidden relative">
+                         <div id="winners-ticker" class="absolute w-full top-0 left-0">
+                         </div>
+                    </div>
+                </div>
+                <div class="flex flex-col items-center text-center bg-primary-dark rounded-lg p-8 relative overflow-hidden">
+                    <img src="placeholder/arrow-bbw.png" alt="Arrow" class="absolute -top-10 -right-20 w-64 opacity-20">
+                    <h2 class="text-3xl font-bold mb-4">Play On The Go!</h2>
+                    <p class="text-gray-300 mb-6 max-w-md">Download our Android app to enjoy your favorite games anytime, anywhere. Don't miss out on exclusive mobile promotions!</p>
+                    <img src="placeholder/bbwapp.webp" alt="BIG WANG App" class="max-w-xs mb-6">
+                    <a href="#" class="btn-primary flex items-center space-x-2">
+                        <img src="placeholder/android-bbw-rszd.webp" alt="Android Icon" class="h-6 w-6">
+                        <span>Download for Android</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-[#06061a] pt-16">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
+                <div class="lg:col-span-2 col-span-2">
+                     <img src="https://r2.flowith.net/files/o/1756339716224-big_wang_gaming_betting_logo_design_index_0@1024x1024.png" alt="BIG WANG Logo" class="h-12 mb-4">
+                     <p class="text-gray-400 max-w-sm mb-6">The ultimate online casino platform with a huge variety of games, bonuses, and daily promotions.</p>
+                     <div class="flex items-center space-x-4">
+                        <img src="placeholder/21.svg" alt="21+">
+                        <p class="text-gray-400">You must be 21 or over to play on this platform.</p>
+                     </div>
+                </div>
+                <div id="footer-links-pages">
+                    <h3 class="footer-title">Pages</h3>
+                </div>
+                <div id="footer-links-software">
+                    <h3 class="footer-title">Software</h3>
+                </div>
+                <div id="footer-links-promotions">
+                    <h3 class="footer-title">Promotions</h3>
+                </div>
+            </div>
+
+            <div class="border-t border-white/10 mt-12 pt-8">
+                <h3 class="footer-title text-center">Our Platforms</h3>
+                <div id="footer-platforms" class="flex flex-wrap items-center justify-center gap-4 mt-6">
+                </div>
+            </div>
+            
+            <div class="border-t border-white/10 mt-12 py-8 flex flex-col md:flex-row justify-between items-center text-center gap-6">
+                <div class="flex items-center space-x-4">
+                    <a href="tel:+13239915854" class="flex items-center space-x-2 text-gray-400 hover:text-yellow-400 transition-colors">
+                        <img src="placeholder/phone-call-icon.svg" alt="Phone" class="h-5">
+                        <span>+1(323) 991-5854</span>
+                    </a>
+                </div>
+                 <div class="flex items-center space-x-4">
+                    <img src="placeholder/bitcoin1.svg" alt="Bitcoin" class="h-8">
+                    <img src="placeholder/dogecoin-removebg-preview.png" alt="Dogecoin" class="h-8">
+                    <img src="placeholder/ltc_rdzn.svg" alt="Litecoin" class="h-8">
+                    <img src="placeholder/usdt-icon.webp" alt="USDT" class="h-8">
+                    <img src="placeholder/cashApp.webp" alt="CashApp" class="h-8">
+                </div>
+            </div>
+        </div>
+        <div class="bg-black py-4">
+            <p class="text-center text-gray-500 text-sm">&copy; 2024 BIG WANG. All Rights Reserved.</p>
+        </div>
+    </footer>
+    
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <script src="script.js" type="module"></script>
 </body>
 </html>

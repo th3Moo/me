@@ -1,109 +1,95 @@
-html, body {
-    margin: 0;
-    font-family: 'Inter', sans-serif;
+:root {
+    --primary-dark: #0f0f2a;
+    --secondary-dark: #171635;
+    --accent-yellow: #facc15; /* yellow-400 */
+    --accent-yellow-dark: #eab308; /* yellow-500 */
+    --text-primary: #ffffff;
+    --text-secondary: #d1d5db; /* gray-300 */
+    --text-muted: #9ca3af; /* gray-400 */
+    --border-color: rgba(250, 204, 21, 0.3);
 }
 
-@import url('https://rsms.me/inter/inter.css');
-
-#sidebar {
-    font-family: 'Inter', sans-serif;
+body {
+    background-color: var(--primary-dark);
+    color: var(--text-primary);
+    font-family: 'Poppins', sans-serif;
 }
 
-#file-tree ul {
-    list-style: none;
-    padding-left: 1rem;
+.bg-primary-dark { background-color: var(--primary-dark); }
+.bg-secondary-dark { background-color: var(--secondary-dark); }
+
+.btn-primary {
+    @apply inline-block px-6 py-3 rounded-full bg-yellow-400 text-primary-dark font-bold uppercase tracking-wider text-center transition-all duration-300;
+    @apply hover:bg-yellow-500 hover:shadow-lg hover:shadow-yellow-500/20 transform hover:-translate-y-0.5;
 }
 
-#file-tree li {
-    margin: 2px 0;
+.btn-secondary {
+    @apply inline-block px-6 py-3 rounded-full bg-transparent border-2 border-yellow-400 text-yellow-400 font-bold uppercase tracking-wider text-center transition-all duration-300;
+    @apply hover:bg-yellow-400 hover:text-primary-dark;
 }
 
-#file-tree .file-item, #file-tree .folder-item {
-    display: flex;
-    align-items: center;
-    padding: 5px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 0.875rem;
-    transition: background-color 0.2s, color 0.2s;
-    color: #a5b4fc; /* Indigo-300 for files */
+.form-input {
+    @apply block w-full bg-primary-dark border-2 border-gray-600 rounded-lg px-4 py-3 text-white placeholder-gray-500;
+    @apply focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:border-yellow-400 transition-colors duration-200;
 }
 
-#file-tree .folder-item {
-    font-weight: 500;
-    color: #e5e7eb; /* Gray-200 for folders */
+.nav-link {
+    @apply relative text-gray-300 font-semibold uppercase tracking-wide transition-colors duration-300;
+    @apply hover:text-white;
 }
 
-#file-tree .file-item:hover, #file-tree .folder-item:hover {
-    background-color: rgba(255, 255, 255, 0.05);
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--accent-yellow);
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease-out;
 }
 
-#file-tree .file-item.active {
-    background-color: #4f46e5; /* Indigo-600 */
-    color: white;
+.nav-link:hover::after {
+    transform: scaleX(1);
 }
 
-#file-tree .file-item.active .lucide {
-    color: white !important;
+.section-title {
+    @apply text-3xl md:text-4xl font-extrabold text-center mb-12 uppercase tracking-wider;
+    background: -webkit-linear-gradient(45deg, var(--accent-yellow), var(--text-primary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-#file-tree .folder-content {
-    display: none;
+.slider-arrow {
+    @apply bg-black/30 text-white rounded-full p-2 transition-all duration-300;
+    @apply hover:bg-yellow-400 hover:text-primary-dark;
 }
 
-#file-tree .folder-item.open + .folder-content {
-    display: block;
+.app-modal {
+    animation: fadeIn 0.3s ease-out, scaleUp 0.3s ease-out;
 }
 
-#file-tree .lucide {
-    margin-right: 0.5rem;
-    flex-shrink: 0;
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
-.folder-item .lucide-chevron-right {
-    transition: transform 0.2s ease-in-out;
+@keyframes scaleUp {
+    from { transform: translate(-50%, -50%) scale(0.9); }
+    to { transform: translate(-50%, -50%) scale(1); }
 }
 
-.folder-item.open .lucide-chevron-right {
-    transform: rotate(90deg);
+.carousel-arrow {
+    @apply bg-secondary-dark border-2 border-yellow-400/50 text-yellow-400 rounded-full p-2 transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed;
+    @apply hover:bg-yellow-400 hover:text-primary-dark;
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+.footer-title {
+    @apply text-lg font-bold text-white uppercase mb-4 tracking-wider;
 }
 
-::-webkit-scrollbar-track {
-    background: #161b22;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #4a5568;
-    border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #718096;
-}
-
-/* Highlight.js overrides */
-.hljs {
-    background: #0d1117 !important;
-    color: #c9d1d9;
-    font-size: 14px;
-    line-height: 1.6;
-    padding: 1.5rem !important;
-}
-
-pre {
-    margin: 0;
-}
-
-code {
-    white-space: pre-wrap;
-}
-
-.prose {
-    max-width: none;
+.footer-link {
+    @apply block text-gray-400 mb-2 hover:text-yellow-400 transition-colors duration-200;
 }
